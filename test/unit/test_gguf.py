@@ -65,12 +65,12 @@ class TestGGUF(unittest.TestCase):
       return np.array([E] + packed, dtype=np.uint8)
 
     def decode(code, E):
-      sign = -1.0 if (code & 0b1000) else 1.0
-      exp = (code >> 1) & 0b11
-      mant = code & 0b1
-      val = 2 * ((1.0 + 0.5 * mant) * np.exp2(exp - 1) if exp else 0.5 * mant)
-      scale = np.exp2(E - 128) if E >= 2 else np.exp2(-127 if E == 1 else -128)
-      return np.float32(sign * val * scale)
+      sign = np.float32(-1.0 if (code & 0b1000) else 1.0)
+      exp = np.float32((code >> 1) & 0b11)
+      mant = np.float32(code & 0b1)
+      val = np.float32(2) * (np.float32(1.0 + 0.5 * mant) * np.exp2(exp - np.float32(1)) if exp else np.float32(0.5) * mant)
+      scale = np.float32(np.exp2(np.float32(E - 128))) if E >= 2 else np.float32(np.exp2(np.float32(-127 if E == 1 else -128)))
+      return sign * val * scale
 
     blocks, expected = [], []
     rng = np.random.default_rng(42)

@@ -110,7 +110,6 @@ class TransformerBlock:
       self.attn_output = nn.Linear(q_proj_out, dim,  bias=False)
     else:
       self.kv_lora_rank = kv_lora_rank
-      self.attn_norm = nn.RMSNorm(dim, norm_eps)
       self.attn_q_a = nn.Linear(dim, q_lora_rank, bias=False)
       self.attn_q_a_norm = nn.RMSNorm(q_lora_rank, norm_eps)
       self.attn_q_b = nn.Linear(q_lora_rank, n_heads * self.q_head_dim, bias=False)

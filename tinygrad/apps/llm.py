@@ -205,8 +205,8 @@ class TransformerBlock:
           if self.expert_weights_norm: probs = probs / (probs.sum(axis=-1, keepdim=True) + 1e-20)
       else:
           probs, sel = self.ffn_gate_inp(h_norm).softmax(-1).topk(self.num_experts_per_tok)
-      x_down = self.ffn_down_exps(sel, self.ffn_gate_exps(sel, x).silu() * self.ffn_up_exps(sel, x))  # (B, T, k, D)
-      out = (x_down * probs.unsqueeze(-1)).sum(axis=2) * self.expert_weights_scale
+      x_down = self.ffn_down_exps(sel, self.ffn_gate_exps(sel, x).silu() * self.ffn_up_exps(sel, x)) & probs.unsqueeze(-1) # (B, T, k, D)
+      out = x_down.sum(axis=2) * self.expert_weights_scale
       if hasattr(self, 'ffn_gate_shexp'): out = out + self.ffn_down_shexp(self.ffn_gate_shexp(h_norm).silu() * self.ffn_up_shexp(h_norm))
       return h + out  # (B, T, D)
     # TODO: remove the need for this contiguous

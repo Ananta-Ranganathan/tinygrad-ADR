@@ -277,7 +277,7 @@ class Transformer:
                         leading_dense_blocks=kv.get(f'{arch}.leading_dense_block_count', 0),
                         kv_lora_rank=kv.get(f'{arch}.attention.kv_lora_rank', 0), q_lora_rank=kv.get(f'{arch}.attention.q_lora_rank', 0),
                         qk_nope_head_dim=(klm-kv.get(f'{arch}.rope.dimension_count', 0) if
-                  (klm:=kv.get(f'{arch}.attention.key_length_mla', kv.get(f'{arch}.attention.key_length', 0))) > 0 else 0),
+                        (klm:=kv.get(f'{arch}.attention.key_length_mla', kv.get(f'{arch}.attention.key_length', 0))) > 0 else 0),
                         qk_rope_head_dim=kv.get(f'{arch}.rope.dimension_count', 0),
                         v_head_dim=kv.get(f'{arch}.attention.value_length_mla', kv.get(f'{arch}.attention.value_length', 0)),
                         n_shared_experts=kv.get(f'{arch}.expert_shared_count', 0),
